@@ -18,12 +18,39 @@
             padding: 20px;
         }
         header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 20px 0;
             border-bottom: 1px solid #333;
         }
         h1 {
             margin: 0;
+            color: #0f9b0f;
+        }
+        .stats-container {
+            background-color: #1f1f1f;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 10px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
             color: #0f9b0f;
         }
         .channels {
@@ -100,7 +127,23 @@
     <div class="container">
         <header>
             <h1>Scooby Streaming Hub</h1>
+            <div id="current-time" class="stat-value"></div>
         </header>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">Total Visitors</div>
+                <div id="total-visitors" class="stat-value">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Current Viewers</div>
+                <div id="current-viewers" class="stat-value">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Your Watch Time</div>
+                <div id="watch-time" class="stat-value">00:00:00</div>
+            </div>
+        </div>
         
         <div class="channels">
             <div class="channel-btn" onclick="playStream('https://vis.dlolcast.pro:7058/hls/astrocric.m3u8')">ASTRO CRICKET</div>
@@ -131,6 +174,95 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
     <script>
+        // Global variables for our tracking features
+        let startTime = new Date();
+        let isWatching = false;
+        let watchSeconds = 0;
+        let watchTimer;
+        let currentViewersCount = 0;
+        
+        // Load total visitors from localStorage or use 0 if none exists
+        let totalVisitors = parseInt(localStorage.getItem('totalVisitors') || 0);
+        
+        // Initialize features when page loads
+        window.onload = function() {
+            incrementTotalVisitors();
+            updateIndianTime();
+            setInterval(updateIndianTime, 1000);
+            startWatchTimeCounter();
+            
+            // Simulate concurrent viewers for demo purposes
+            simulateConcurrentViewers();
+        };
+        
+        // Feature 1: Total Visitors Counter
+        function incrementTotalVisitors() {
+            // Check if this is a new session
+            if (!sessionStorage.getItem('counted')) {
+                totalVisitors++;
+                localStorage.setItem('totalVisitors', totalVisitors);
+                sessionStorage.setItem('counted', 'true');
+            }
+            
+            document.getElementById('total-visitors').textContent = totalVisitors;
+        }
+        
+        // Feature 2: Concurrent Viewers (simulated for demo)
+        function simulateConcurrentViewers() {
+            // Simulate initial viewers
+            currentViewersCount = Math.floor(Math.random() * 100) + 10;
+            updateConcurrentViewers();
+            
+            // Simulate fluctuations in viewer count
+            setInterval(function() {
+                // Random change between -3 and +5 viewers
+                const change = Math.floor(Math.random() * 9) - 3;
+                currentViewersCount = Math.max(5, currentViewersCount + change);
+                updateConcurrentViewers();
+            }, 5000);
+        }
+        
+        function updateConcurrentViewers() {
+            document.getElementById('current-viewers').textContent = currentViewersCount;
+        }
+        
+        // Feature 3: Indian Standard Time Clock
+        function updateIndianTime() {
+            const options = {
+                timeZone: 'Asia/Kolkata',
+                hour12: true,
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            };
+            
+            const indianTime = new Date().toLocaleString('en-US', options);
+            document.getElementById('current-time').textContent = indianTime + ' IST';
+        }
+        
+        // Feature 4: User Watch Time
+        function startWatchTimeCounter() {
+            watchTimer = setInterval(function() {
+                if (isWatching) {
+                    watchSeconds++;
+                    updateWatchTimeDisplay();
+                }
+            }, 1000);
+        }
+        
+        function updateWatchTimeDisplay() {
+            const hours = Math.floor(watchSeconds / 3600);
+            const minutes = Math.floor((watchSeconds % 3600) / 60);
+            const seconds = watchSeconds % 60;
+            
+            const timeString = 
+                String(hours).padStart(2, '0') + ':' + 
+                String(minutes).padStart(2, '0') + ':' + 
+                String(seconds).padStart(2, '0');
+                
+            document.getElementById('watch-time').textContent = timeString;
+        }
+        
         function createVideoElement() {
             const playerContainer = document.getElementById('player-container');
             playerContainer.innerHTML = '';
@@ -146,6 +278,9 @@
         
         function playStream(url) {
             const video = createVideoElement();
+            
+            // Start tracking watch time when stream starts
+            isWatching = true;
             
             if (Hls.isSupported()) {
                 const hls = new Hls();
@@ -180,6 +315,14 @@
                 playCustomStream();
             }
         });
+        
+        // Update session storage before user leaves
+        window.addEventListener('beforeunload', function() {
+            // Save any necessary data before page unload
+            isWatching = false;
+            clearInterval(watchTimer);
+        });
     </script>
 </body>
 </html>
+    
