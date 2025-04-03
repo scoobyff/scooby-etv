@@ -28,27 +28,19 @@
             margin: 0;
             color: #0f9b0f;
         }
-        .stats-container {
+        .watch-time-container {
             background-color: #1f1f1f;
             border-radius: 5px;
             padding: 10px 20px;
             margin-top: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .stat-box {
-            padding: 10px;
             text-align: center;
-            flex: 1;
-            min-width: 150px;
         }
-        .stat-label {
+        .watch-time-label {
             font-size: 14px;
             color: #999;
             margin-bottom: 5px;
         }
-        .stat-value {
+        .watch-time-value {
             font-size: 18px;
             font-weight: bold;
             color: #0f9b0f;
@@ -121,28 +113,23 @@
             text-align: center;
             padding: 20px;
         }
+        #current-time {
+            color: #0f9b0f;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Scooby Streaming Hub</h1>
-            <div id="current-time" class="stat-value"></div>
+            <div id="current-time"></div>
         </header>
         
-        <div class="stats-container">
-            <div class="stat-box">
-                <div class="stat-label">Total Visitors</div>
-                <div id="total-visitors" class="stat-value">0</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Current Viewers</div>
-                <div id="current-viewers" class="stat-value">0</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Your Watch Time</div>
-                <div id="watch-time" class="stat-value">00:00:00</div>
-            </div>
+        <div class="watch-time-container">
+            <div class="watch-time-label">Your Watch Time</div>
+            <div id="watch-time" class="watch-time-value">00:00:00</div>
         </div>
         
         <div class="channels">
@@ -174,59 +161,26 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
     <script>
-        // Global variables for our tracking features
-        let startTime = new Date();
+        // Global variables for watch time tracking
         let isWatching = false;
         let watchSeconds = 0;
         let watchTimer;
-        let currentViewersCount = 0;
-        
-        // Load total visitors from localStorage or use 0 if none exists
-        let totalVisitors = parseInt(localStorage.getItem('totalVisitors') || 0);
         
         // Initialize features when page loads
         window.onload = function() {
-            incrementTotalVisitors();
             updateIndianTime();
             setInterval(updateIndianTime, 1000);
             startWatchTimeCounter();
             
-            // Simulate concurrent viewers for demo purposes
-            simulateConcurrentViewers();
+            // Allow Enter key to submit custom URL
+            document.getElementById('custom-url').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    playCustomStream();
+                }
+            });
         };
         
-        // Feature 1: Total Visitors Counter
-        function incrementTotalVisitors() {
-            // Check if this is a new session
-            if (!sessionStorage.getItem('counted')) {
-                totalVisitors++;
-                localStorage.setItem('totalVisitors', totalVisitors);
-                sessionStorage.setItem('counted', 'true');
-            }
-            
-            document.getElementById('total-visitors').textContent = totalVisitors;
-        }
-        
-        // Feature 2: Concurrent Viewers (simulated for demo)
-        function simulateConcurrentViewers() {
-            // Simulate initial viewers
-            currentViewersCount = Math.floor(Math.random() * 100) + 10;
-            updateConcurrentViewers();
-            
-            // Simulate fluctuations in viewer count
-            setInterval(function() {
-                // Random change between -3 and +5 viewers
-                const change = Math.floor(Math.random() * 9) - 3;
-                currentViewersCount = Math.max(5, currentViewersCount + change);
-                updateConcurrentViewers();
-            }, 5000);
-        }
-        
-        function updateConcurrentViewers() {
-            document.getElementById('current-viewers').textContent = currentViewersCount;
-        }
-        
-        // Feature 3: Indian Standard Time Clock
+        // Indian Standard Time Clock
         function updateIndianTime() {
             const options = {
                 timeZone: 'Asia/Kolkata',
@@ -240,7 +194,7 @@
             document.getElementById('current-time').textContent = indianTime + ' IST';
         }
         
-        // Feature 4: User Watch Time
+        // User Watch Time
         function startWatchTimeCounter() {
             watchTimer = setInterval(function() {
                 if (isWatching) {
@@ -277,10 +231,10 @@
         }
         
         function playStream(url) {
-            const video = createVideoElement();
-            
             // Start tracking watch time when stream starts
             isWatching = true;
+            
+            const video = createVideoElement();
             
             if (Hls.isSupported()) {
                 const hls = new Hls();
@@ -309,20 +263,13 @@
             }
         }
         
-        // Allow Enter key to submit custom URL
-        document.getElementById('custom-url').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                playCustomStream();
-            }
-        });
-        
-        // Update session storage before user leaves
+        // Update before user leaves
         window.addEventListener('beforeunload', function() {
-            // Save any necessary data before page unload
+            // Reset watch time tracking
             isWatching = false;
             clearInterval(watchTimer);
         });
     </script>
 </body>
-</html>
-    
+    </html>
+                
