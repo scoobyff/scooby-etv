@@ -118,10 +118,37 @@
             font-size: 18px;
             font-weight: bold;
         }
+        /* Maintenance Mode Styles */
+        .maintenance-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .maintenance-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: #0f9b0f;
+        }
+        .maintenance-title {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #0f9b0f;
+        }
+        .maintenance-message {
+            font-size: 18px;
+            max-width: 600px;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-content">
         <header>
             <h1>Scooby Streaming Hub</h1>
             <div id="current-time"></div>
@@ -157,8 +184,29 @@
         </div>
     </div>
 
+    <!-- Maintenance Mode Content -->
+    <div class="container" id="maintenance-content" style="display: none;">
+        <header>
+            <h1>Scooby Streaming Hub</h1>
+            <div id="maintenance-time"></div>
+        </header>
+        
+        <div class="maintenance-container">
+            <div class="maintenance-icon">🛠️</div>
+            <h2 class="maintenance-title">Under Maintenance</h2>
+            <p class="maintenance-message">
+                We're currently improving our streaming services to provide you with a better experience.
+                Please check back later. We apologize for any inconvenience.
+            </p>
+            <p>Expected to be back at 6:30 PM IST.</p>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
     <script>
+        // Maintenance mode control - CHANGE THIS LINE TO TOGGLE
+        let underMaintenance = "Yes"; // Set to "Yes" for maintenance mode, "No" for normal operation
+        
         // Global variables for watch time tracking
         let isWatching = false;
         let watchSeconds = 0;
@@ -166,9 +214,7 @@
         
         // Initialize features when page loads
         window.onload = function() {
-            updateIndianTime();
-            setInterval(updateIndianTime, 1000);
-            startWatchTimeCounter();
+            checkMaintenanceStatus();
             
             // Allow Enter key to submit custom URL
             document.getElementById('custom-url').addEventListener('keyup', function(event) {
@@ -176,7 +222,29 @@
                     playCustomStream();
                 }
             });
+            
+            // Start watch time counter if not in maintenance mode
+            if (underMaintenance === "Yes") {
+                startWatchTimeCounter();
+            }
         };
+        
+        function checkMaintenanceStatus() {
+            const mainContent = document.getElementById('main-content');
+            const maintenanceContent = document.getElementById('maintenance-content');
+            
+            if (underMaintenance === "Yes") {
+                mainContent.style.display = 'none';
+                maintenanceContent.style.display = 'block';
+                updateMaintenanceTime();
+                setInterval(updateMaintenanceTime, 1000);
+            } else {
+                mainContent.style.display = 'block';
+                maintenanceContent.style.display = 'none';
+                updateIndianTime();
+                setInterval(updateIndianTime, 1000);
+            }
+        }
         
         // Indian Standard Time Clock
         function updateIndianTime() {
@@ -190,6 +258,20 @@
             
             const indianTime = new Date().toLocaleString('en-US', options);
             document.getElementById('current-time').textContent = indianTime + ' IST';
+        }
+        
+        // Maintenance Mode Time
+        function updateMaintenanceTime() {
+            const options = {
+                timeZone: 'Asia/Kolkata',
+                hour12: true,
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            };
+            
+            const indianTime = new Date().toLocaleString('en-US', options);
+            document.getElementById('maintenance-time').textContent = indianTime + ' IST';
         }
         
         // User Watch Time
@@ -229,6 +311,11 @@
         }
         
         function playStream(url) {
+            // Check if site is in maintenance mode
+            if (underMaintenance === "Yes") {
+                return;
+            }
+            
             // Start tracking watch time when stream starts
             isWatching = true;
             
@@ -253,6 +340,11 @@
         }
         
         function playCustomStream() {
+            // Check if site is in maintenance mode
+            if (underMaintenance === "Yes") {
+                return;
+            }
+            
             const customUrl = document.getElementById('custom-url').value.trim();
             if (customUrl) {
                 playStream(customUrl);
