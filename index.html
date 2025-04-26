@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sports Regional Hub</title>
+    <title>Scooby Streaming Hub</title>
     <style>
         body {
             font-family: Times New Roman, sans-serif;
@@ -118,32 +118,96 @@
             font-size: 18px;
             font-weight: bold;
         }
-        /* Maintenance Mode Styles */
-        .maintenance-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        
+        /* Welcome Popup Styles */
+        .welcome-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
             justify-content: center;
-            min-height: 60vh;
+            align-items: center;
+        }
+        .welcome-content {
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
             text-align: center;
-            padding: 20px;
+            box-shadow: 0 0 20px rgba(15, 155, 15, 0.5);
         }
-        .maintenance-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+        .welcome-title {
             color: #0f9b0f;
-        }
-        .maintenance-title {
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: #0f9b0f;
-        }
-        .maintenance-message {
-            font-size: 18px;
-            max-width: 600px;
-            line-height: 1.6;
-            color: #ccc;
             margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .welcome-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #0f9b0f;
+            background-color: #121212;
+            color: white;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .welcome-btn {
+            padding: 12px 20px;
+            margin-top: 20px;
+            background-color: #0f9b0f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .welcome-btn:hover {
+            background-color: #0d8d0d;
+        }
+        
+        /* Broadcast Message Styles */
+        .broadcast-container {
+            display: none;
+            background-color: #0f9b0f;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .broadcast-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        /* Shaka Player Controls */
+        .shaka-controls-container {
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        }
+        .quality-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        .quality-btn {
+            padding: 5px 10px;
+            background-color: #1f1f1f;
+            border: 1px solid #333;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .quality-btn.active {
+            background-color: #0f9b0f;
         }
     </style>
 </head>
@@ -154,29 +218,35 @@
             <div id="current-time"></div>
         </header>
         
+        <div id="welcome-message" style="margin-top: 10px; color: #0f9b0f; text-align: right;"></div>
+        
+        <div class="broadcast-container" id="broadcast-container">
+            <div class="broadcast-title">📢 ANNOUNCEMENT</div>
+            <div id="broadcast-message">Welcome to the improved Scooby Streaming Hub!</div>
+        </div>
+        
         <div class="watch-time-container">
             <div class="watch-time-label">Your Watch Time</div>
             <div id="watch-time" class="watch-time-value">00:00:00</div>
         </div>
         
-                <div class="channels">
-            <div class="channel-btn" onclick="playStream('https://z5ak-cmaflive.zee5.com/cmaf/live/2105545/ZeeTeluguHDELE/index.m3u8?hdnts=st=1745250483~exp=1745253483~acl=/cmaf/live/2105545/ZeeTeluguHDELE/index.m3u8*~hmac=92f03f28dbd13e139deb4f7e82e0e0581a6fa81195547593bd340b0423c2218f&req_id=71ea8a10-9b09-4186-a8b2-0317e4b5ed56', ' ZEE TELUGU HD')"> ZEE TELUGU HD </div>
-            <div class="channel-btn" onclick="playStream('https://z5ak-cmaflive.zee5.com/cmaf/live/2105544/ZeeCinemaluHDELE/index.m3u8?hdnts=st=1745250328~exp=1745253328~acl=/cmaf/live/2105544/ZeeCinemaluHDELE/index.m3u8*~hmac=764c692362b6fee1a6334cad186caa5f648f706754d1faa1e7ce5bf1656f6498&req_id=edfadefa-59f5-49cc-9dd4-b00c53ad12e4', ' ZEE CINEMALU HD')"> ZEE CINEMALU HD </div>
-            <div class="channel-btn" onclick="playStream('https://d2z3q47xzd535o.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_HD_H264-2_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_HD_H264-2_cloud_in/b4d1cb9f-151d-4cbf-9dc2-f749be3c804b/3.m3u8', ' ETV ')"> ETV HD </div>
-             <div class="channel-btn" onclick="playStream('https://d27tnkf60df3v4.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_PLUS_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_PLUS_H264-3_cloud_in/52090000-23ec-473b-8719-7fd9d359def9/3.m3u8', ' ETV PLUS ')"> ETV PLUS HD</div>
-            <div class="channel-btn" onclick="playStream('https://d1q7j6ha51ro6f.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_CINEMA_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_CINEMA_H264-3_cloud_in/ff3e128a-03cd-4a45-9b52-7966e7d5debe/3.m3u8', ' ETV  CINEMA')"> ETV CINEMA HD</div>
-             <div class="channel-btn" onclick="playStream('https://d1wo3qx3gqdz3v.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_LIFE_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_LIFE_H264-3_cloud_in/64781e7a-b43f-4051-a6b9-c3b2d9667457/3.m3u8', ' ETV LIFE ')"> ETV LIFE HD</div>  
-             <div class="channel-btn" onclick="playStream('https://d2tbworamivdmb.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_ABHIRUCHI_H264-3_cloud-in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_ABHIRUCHI_H264-3_cloud-in/66d77ae1-1544-433d-953f-f765a15accc3/3.m3u8', ' ETV ABHIRUCHI ')"> ETV ABHIRUCHI HD</div> 
-             <div class="channel-btn" onclick="playStream('https://dssp63pjfajz9.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_TS_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_TS_H264-3_cloud_in/4e7c32d8-817a-4224-b68d-c1ea9e42eba2/3.m3u8', ' ETV TS ')"> ETV TS HD</div> 
-             <div class="channel-btn" onclick="playStream('https://d14vo2b97spizt.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_AP_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_AP_H264-3_cloud_in/47283799-9781-42d5-a68c-4b740578e0eb/3.m3u8', ' ETV AP ')"> ETV AP HD</div>       
+        <div class="channels" id="channels-container">
+            <!-- Channels will be loaded from JSON -->
+            <div class="channel-btn">Loading channels...</div>
+        </div>
+        
         <div class="player-container" id="player-container">
             <div class="no-stream">
                 <p>Select a channel or add a custom stream to start watching</p>
             </div>
         </div>
         
+        <div class="quality-controls" id="quality-controls" style="display: none;">
+            <!-- Quality options will be added dynamically -->
+        </div>
+        
         <div class="play-info">
-            Open in google chrome and wait 5-10 sec to load the stream
+            Select a channel and wait 5-10 seconds to load the stream
         </div>
         
         <div class="custom-stream">
@@ -185,41 +255,51 @@
             <button onclick="playCustomStream()">Play Stream</button>
         </div>
     </div>
-
-    <!-- Maintenance Mode Content -->
-    <div class="container" id="maintenance-content" style="display: none;">
-        <header>
-            <h1>Scooby Streaming Hub</h1>
-            <div id="maintenance-time"></div>
-        </header>
-        
-        <div class="maintenance-container">
-            <div class="maintenance-icon">🛠️</div>
-            <h2 class="maintenance-title">Under Maintenance</h2>
-            <p class="maintenance-message">
-                We're currently improving our streaming services to provide you with a better experience.
-
-               Pls Watch Our new site from now on streams will be continued there    https://scoobyff.github.io/scoobycricket/
-                 
-              We apologize for any inconvenience.
-            </p>
-            <p>Expected to be back at 6:30 PM IST.</p>
+    
+    <!-- Welcome Popup -->
+    <div class="welcome-popup" id="welcome-popup">
+        <div class="welcome-content">
+            <h2 class="welcome-title">Welcome to Scooby Streaming Hub</h2>
+            <p>Please enter your name to continue:</p>
+            <input type="text" id="user-name" class="welcome-input" placeholder="Your Name">
+            <button class="welcome-btn" onclick="submitUserName()">Continue</button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
+    <!-- Load Shaka Player -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.3/shaka-player.compiled.js"></script>
+    
     <script>
-        // Maintenance mode control - CHANGE THIS LINE TO TOGGLE
-        let underMaintenance = "No"; // Set to "Yes" for maintenance mode, "No" for normal operation
+        // Telegram bot configuration
+        const TELEGRAM_BOT_TOKEN = "7930306003:AAGjq3KMGfJiSsA5N3irttWYHHvuS2plQXM"; // Replace with your bot token
+        const TELEGRAM_CHAT_ID = "1572380763"; // Replace with your chat ID
         
-        // Global variables for watch time tracking
-        let isWatching = false;
+        // Global variables for tracking
+        let userName = "";
+        let userMessageId = null; // Store message ID for updating
+        let watchHistory = [];
+        let currentStreamName = "";
+        let streamStartTime = null;
         let watchSeconds = 0;
-        let watchTimer;
+        let isWatching = false;
+        let liveViewers = new Set(); // Track unique viewers
+        let totalViews = 0; // Track total visits
+        let adClicks = []; // Track ad clicks
+        
+        // Shaka player variables
+        let player = null;
+        let currentStream = null;
         
         // Initialize features when page loads
         window.onload = function() {
-            checkMaintenanceStatus();
+            // Initialize Shaka Player
+            initApp();
+            
+            // Load channels from JSON
+            loadChannels();
+            
+            // Initialize Telegram tracking
+            initializeTelegramTracking();
             
             // Allow Enter key to submit custom URL
             document.getElementById('custom-url').addEventListener('keyup', function(event) {
@@ -228,26 +308,202 @@
                 }
             });
             
-            // Start watch time counter if not in maintenance mode
-            if (underMaintenance === "Yes") {
-                startWatchTimeCounter();
-            }
+            // Start displaying time
+            updateIndianTime();
+            setInterval(updateIndianTime, 1000);
         };
         
-        function checkMaintenanceStatus() {
-            const mainContent = document.getElementById('main-content');
-            const maintenanceContent = document.getElementById('maintenance-content');
+        // Initialize Shaka Player
+        async function initApp() {
+            // Install built-in polyfills to patch browser incompatibilities
+            shaka.polyfill.installAll();
             
-            if (underMaintenance === "Yes") {
-                mainContent.style.display = 'none';
-                maintenanceContent.style.display = 'block';
-                updateMaintenanceTime();
-                setInterval(updateMaintenanceTime, 1000);
+            // Check if the browser supports Shaka Player
+            if (!shaka.Player.isBrowserSupported()) {
+                console.error('Browser not supported for Shaka Player!');
+                return;
+            }
+        }
+        
+        // Load channels from JSON
+        async function loadChannels() {
+            try {
+                // Replace with your GitHub JSON URL
+                const jsonUrl = 'https://raw.githubusercontent.com/scoobyff/jsondrm/main/stream.json';
+                const response = await fetch(jsonUrl);
+                const data = await response.json();
+                
+                // Clear loading message
+                document.getElementById('channels-container').innerHTML = '';
+                
+                // Add channels
+                data.channels.forEach(channel => {
+                    const channelBtn = document.createElement('div');
+                    channelBtn.className = 'channel-btn';
+                    channelBtn.textContent = channel.name;
+                    channelBtn.onclick = function() {
+                        playStream(channel.url, channel.name);
+                    };
+                    document.getElementById('channels-container').appendChild(channelBtn);
+                });
+            } catch (error) {
+                console.error('Error loading channels:', error);
+                // Fallback to hardcoded channels
+                loadFallbackChannels();
+            }
+        }
+        
+        // Fallback channels if JSON fails to load
+        function loadFallbackChannels() {
+            const channels = [
+                { name: "ZEE TELUGU HD", url: "https://z5ak-cmaflive.zee5.com/cmaf/live/2105545/ZeeTeluguHDELE/index.m3u8?hdnts=st=1745250483~exp=1745253483~acl=/cmaf/live/2105545/ZeeTeluguHDELE/index.m3u8*~hmac=92f03f28dbd13e139deb4f7e82e0e0581a6fa81195547593bd340b0423c2218f&req_id=71ea8a10-9b09-4186-a8b2-0317e4b5ed56" },
+                { name: "ZEE CINEMALU HD", url: "https://z5ak-cmaflive.zee5.com/cmaf/live/2105544/ZeeCinemaluHDELE/index.m3u8?hdnts=st=1745250328~exp=1745253328~acl=/cmaf/live/2105544/ZeeCinemaluHDELE/index.m3u8*~hmac=764c692362b6fee1a6334cad186caa5f648f706754d1faa1e7ce5bf1656f6498&req_id=edfadefa-59f5-49cc-9dd4-b00c53ad12e4" },
+                { name: "ETV HD", url: "https://d2z3q47xzd535o.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_HD_H264-2_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_HD_H264-2_cloud_in/b4d1cb9f-151d-4cbf-9dc2-f749be3c804b/3.m3u8" },
+                { name: "ETV PLUS HD", url: "https://d27tnkf60df3v4.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_PLUS_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_PLUS_H264-3_cloud_in/52090000-23ec-473b-8719-7fd9d359def9/3.m3u8" },
+                { name: "ETV CINEMA HD", url: "https://d1q7j6ha51ro6f.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_CINEMA_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_CINEMA_H264-3_cloud_in/ff3e128a-03cd-4a45-9b52-7966e7d5debe/3.m3u8" },
+                { name: "ETV LIFE HD", url: "https://d1wo3qx3gqdz3v.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_LIFE_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_LIFE_H264-3_cloud_in/64781e7a-b43f-4051-a6b9-c3b2d9667457/3.m3u8" },
+                { name: "ETV ABHIRUCHI HD", url: "https://d2tbworamivdmb.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_ABHIRUCHI_H264-3_cloud-in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_ABHIRUCHI_H264-3_cloud-in/66d77ae1-1544-433d-953f-f765a15accc3/3.m3u8" },
+                { name: "ETV TS HD", url: "https://dssp63pjfajz9.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_TS_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_TS_H264-3_cloud_in/4e7c32d8-817a-4224-b68d-c1ea9e42eba2/3.m3u8" },
+                { name: "ETV AP HD", url: "https://d14vo2b97spizt.cloudfront.net:443/v1/master/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_AP_H264-3_cloud_in/../../../manifest/9d43eacaed199f8d5883927e7aef514a8a08e108/ETV_AP_H264-3_cloud_in/47283799-9781-42d5-a68c-4b740578e0eb/3.m3u8" }
+            ];
+            
+            document.getElementById('channels-container').innerHTML = '';
+            
+            channels.forEach(channel => {
+                const channelBtn = document.createElement('div');
+                channelBtn.className = 'channel-btn';
+                channelBtn.textContent = channel.name;
+                channelBtn.onclick = function() {
+                    playStream(channel.url, channel.name);
+                };
+                document.getElementById('channels-container').appendChild(channelBtn);
+            });
+        }
+        
+        // Play stream using Shaka Player
+        async function playStream(url, streamName) {
+            // Check if user has entered name
+            if (!userName) {
+                document.getElementById('welcome-popup').style.display = 'flex';
+                return;
+            }
+            
+            // Start tracking watch time
+            isWatching = true;
+            
+            // Record stream start
+            recordStreamStart(streamName);
+            
+            // Create video element if needed
+            const playerContainer = document.getElementById('player-container');
+            if (!document.getElementById('video-player')) {
+                playerContainer.innerHTML = '<video id="video-player" controls autoplay></video>';
+            }
+            
+            const videoElement = document.getElementById('video-player');
+            
+            try {
+                // Create player if it doesn't exist
+                if (!player) {
+                    player = new shaka.Player(videoElement);
+                    
+                    // Listen for errors
+                    player.addEventListener('error', function(event) {
+                        console.error('Error code', event.detail.code, 'object', event.detail);
+                    });
+                }
+                
+                // Store current stream URL
+                currentStream = url;
+                
+                // Load the stream
+                await player.load(url);
+                console.log('The video has now been loaded!');
+                
+                // Get available video tracks
+                const tracks = player.getVariantTracks();
+                updateQualityOptions(tracks);
+                
+                // Show quality controls
+                document.getElementById('quality-controls').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Error loading stream:', error);
+                playerContainer.innerHTML = `
+                    <div class="no-stream">
+                        <p>Error loading stream: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Update quality options based on available tracks
+        function updateQualityOptions(tracks) {
+            const qualityControls = document.getElementById('quality-controls');
+            qualityControls.innerHTML = '';
+            
+            // Add auto option
+            const autoBtn = document.createElement('button');
+            autoBtn.className = 'quality-btn active';
+            autoBtn.textContent = 'Auto';
+            autoBtn.onclick = function() {
+                player.configure({abr: {enabled: true}});
+                
+                // Update active button
+                document.querySelectorAll('.quality-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+            };
+            qualityControls.appendChild(autoBtn);
+            
+            // Get unique resolutions
+            const resolutions = [];
+            tracks.forEach(track => {
+                if (track.height && !resolutions.some(r => r.height === track.height)) {
+                    resolutions.push({
+                        height: track.height, 
+                        width: track.width,
+                        id: track.id
+                    });
+                }
+            });
+            
+            // Sort by resolution (highest first)
+            resolutions.sort((a, b) => b.height - a.height);
+            
+            // Add buttons for each resolution
+            resolutions.forEach(resolution => {
+                const qualityBtn = document.createElement('button');
+                qualityBtn.className = 'quality-btn';
+                qualityBtn.textContent = `${resolution.height}p`;
+                qualityBtn.onclick = function() {
+                    // Disable ABR
+                    player.configure({abr: {enabled: false}});
+                    
+                    // Find a track with this resolution
+                    const tracksWithResolution = tracks.filter(t => t.height === resolution.height);
+                    if (tracksWithResolution.length > 0) {
+                        player.selectVariantTrack(tracksWithResolution[0], true);
+                    }
+                    
+                    // Update active button
+                    document.querySelectorAll('.quality-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                };
+                qualityControls.appendChild(qualityBtn);
+            });
+        }
+        
+        // Play custom stream
+        function playCustomStream() {
+            const customUrl = document.getElementById('custom-url').value.trim();
+            if (customUrl) {
+                playStream(customUrl, "Custom Stream");
             } else {
-                mainContent.style.display = 'block';
-                maintenanceContent.style.display = 'none';
-                updateIndianTime();
-                setInterval(updateIndianTime, 1000);
+                alert('Please enter a valid stream URL');
             }
         }
         
@@ -265,31 +521,72 @@
             document.getElementById('current-time').textContent = indianTime + ' IST';
         }
         
-        // Maintenance Mode Time
-        function updateMaintenanceTime() {
+        // Function to get current time in Indian timezone
+        function getIndianTime() {
             const options = {
                 timeZone: 'Asia/Kolkata',
                 hour12: true,
                 hour: 'numeric',
                 minute: 'numeric',
-                second: 'numeric'
+                second: 'numeric',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
             };
             
-            const indianTime = new Date().toLocaleString('en-US', options);
-            document.getElementById('maintenance-time').textContent = indianTime + ' IST';
+            return new Date().toLocaleString('en-US', options);
         }
         
-        // User Watch Time
-        function startWatchTimeCounter() {
-            watchTimer = setInterval(function() {
-                if (isWatching) {
-                    watchSeconds++;
-                    updateWatchTimeDisplay();
-                }
-            }, 1000);
+        // Initialize user data in Telegram with a single message
+        function initializeUserData() {
+            const userAgent = navigator.userAgent;
+            const currentTime = getIndianTime();
+            const message = `🚨 New Viewer:\nName: ${userName}\nDevice: ${userAgent}\nLogin Time: ${currentTime}\n\n📺 Watch History: None\n⏱️ Total Watch Time: 00:00:00`;
+            
+            // Send message to Telegram bot and store the message ID
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        userMessageId = data.result.message_id;
+                        console.log("User data initialized in Telegram with message ID:", userMessageId);
+                    }
+                })
+                .catch(error => console.error("Error sending to Telegram:", error));
         }
         
-        function updateWatchTimeDisplay() {
+        // Update user data in Telegram (single message per user)
+        function updateUserTelegramMessage() {
+            // Skip if no message ID (not initialized)
+            if (!userMessageId) return;
+            
+            // Prepare watch history summary
+            let historyText = watchHistory.length > 0 ? '\n\n📺 Watch History:' : '\n\n📺 Watch History: None';
+            
+            if (watchHistory.length > 0) {
+                watchHistory.forEach((entry, index) => {
+                    historyText += `\n${index + 1}. ${entry.stream}`;
+                    historyText += `\n   Started: ${entry.startTime}`;
+                    if (entry.endTime) {
+                        historyText += `\n   Ended: ${entry.endTime}`;
+                    } else {
+                        historyText += `\n   Status: Currently watching`;
+                    }
+                });
+            }
+            
+            // Add ad clicks if any
+            if (adClicks.length > 0) {
+                historyText += "\n\n📢 Ad Clicks:";
+                adClicks.forEach((click, index) => {
+                    historyText += `\n${index + 1}. ${click.ad}`;
+                    historyText += `\n   Time: ${click.time}`;
+                });
+            }
+            
+            // Calculate total watch time
             const hours = Math.floor(watchSeconds / 3600);
             const minutes = Math.floor((watchSeconds % 3600) / 60);
             const seconds = watchSeconds % 60;
@@ -298,74 +595,237 @@
                 String(hours).padStart(2, '0') + ':' + 
                 String(minutes).padStart(2, '0') + ':' + 
                 String(seconds).padStart(2, '0');
+            
+            const currentTime = getIndianTime();
+            let statusText = currentStreamName ? `\n\n🟢 Currently watching: ${currentStreamName}` : `\n\n🔴 Not watching anything`;
+            
+            const userAgent = navigator.userAgent;
+            const message = `🚨 Stream Viewer:\nName: ${userName}\nDevice: ${userAgent}\nLogin Time: ${currentTime}${statusText}${historyText}\n\n⏱️ Total Watch Time: ${timeString}`;
+            
+            // Update the existing message instead of sending a new one
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/editMessageText?chat_id=${TELEGRAM_CHAT_ID}&message_id=${userMessageId}&text=${encodeURIComponent(message)}`;
+            
+            fetch(url)
+                .catch(error => console.error("Error updating Telegram message:", error));
+        }
+        
+        // Track ad clicks
+        function trackAdClick(adId) {
+            if (userName) {
+                const click = {
+                    ad: adId,
+                    time: getIndianTime()
+                };
                 
-            document.getElementById('watch-time').textContent = timeString;
-        }
-        
-        function createVideoElement() {
-            const playerContainer = document.getElementById('player-container');
-            playerContainer.innerHTML = '';
-            
-            const video = document.createElement('video');
-            video.id = 'video-player';
-            video.controls = true;
-            video.autoplay = true;
-            
-            playerContainer.appendChild(video);
-            return video;
-        }
-        
-        function playStream(url) {
-            // Check if site is in maintenance mode
-            if (underMaintenance === "Yes") {
-                return;
+                adClicks.push(click);
+                
+                // Update user data in Telegram
+                updateUserTelegramMessage();
             }
             
-            // Start tracking watch time when stream starts
-            isWatching = true;
+            return true; // Allow the click to continue
+        }
+        
+        // Check for broadcast messages from Telegram
+        function checkForBroadcasts() {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=-1&limit=5`;
             
-            const video = createVideoElement();
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok && data.result.length > 0) {
+                        // Process the most recent messages, looking for /broadcast command
+                        for (let i = data.result.length - 1; i >= 0; i--) {
+                            const update = data.result[i];
+                            if (update.message && update.message.text && update.message.text.startsWith('/broadcast ')) {
+                                const broadcastMessage = update.message.text.substring('/broadcast '.length);
+                                displayBroadcast(broadcastMessage);
+                                break; // Exit after finding the most recent broadcast
+                            } else if (update.message && update.message.text && update.message.text === '/live') {
+                                // Handle /live command
+                                sendLiveViewersCount();
+                            } else if (update.message && update.message.text && update.message.text === '/totalviews') {
+                                // Handle /totalviews command
+                                sendTotalViewsCount();
+                            }
+                        }
+                    }
+                })
+                .catch(error => console.error("Error checking broadcasts:", error));
+        }
+        
+        // Display broadcast message on the website
+        function displayBroadcast(message) {
+            const broadcastContainer = document.getElementById('broadcast-container');
+            const broadcastMessage = document.getElementById('broadcast-message');
             
-            if (Hls.isSupported()) {
-                const hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // For Safari
-                video.src = url;
-                video.addEventListener('loadedmetadata', function() {
-                    video.play();
-                });
+            if (message && message.trim() !== '') {
+                broadcastMessage.textContent = message;
+                broadcastContainer.style.display = 'block';
             } else {
-                alert('Your browser does not support HLS playback');
+                broadcastContainer.style.display = 'none';
             }
         }
         
-        function playCustomStream() {
-            // Check if site is in maintenance mode
-            if (underMaintenance === "Yes") {
-                return;
+        // Send live viewers count to Telegram
+        function sendLiveViewersCount() {
+            const count = liveViewers.size;
+            const message = `🟢 LIVE VIEWERS: ${count}\n\nActive viewers: ${Array.from(liveViewers).join(', ')}`;
+            
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+            
+            fetch(url)
+                .catch(error => console.error("Error sending live viewers count:", error));
+        }
+        
+        // Send total views count to Telegram
+        function sendTotalViewsCount() {
+            const message = `👁️ TOTAL PAGE VIEWS: ${totalViews}`;
+            
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+            
+            fetch(url)
+                .catch(error => console.error("Error sending total views count:", error));
+        }
+        
+        // Record stream start
+        function recordStreamStart(streamName) {
+            // End current stream if any
+            if (currentStreamName && streamStartTime) {
+                const endTime = getIndianTime();
+                
+                // Find the current stream in history and update it
+                for (let i = watchHistory.length - 1; i >= 0; i--) {
+                    if (watchHistory[i].stream === currentStreamName && !watchHistory[i].endTime) {
+                        watchHistory[i].endTime = endTime;
+                        break;
+                    }
+                }
             }
             
-            const customUrl = document.getElementById('custom-url').value.trim();
-            if (customUrl) {
-                playStream(customUrl);
+            // Start new stream
+            currentStreamName = streamName;
+            streamStartTime = getIndianTime();
+            
+            // Add to watch history
+            watchHistory.push({
+                stream: streamName,
+                startTime: streamStartTime,
+                endTime: null
+            });
+            
+            // Add to live viewers if not already included
+            liveViewers.add(userName);
+            
+            // Update Telegram data
+            updateUserTelegramMessage();
+        }
+        
+        // Initialize Telegram tracking
+        function initializeTelegramTracking() {
+            // Check if user exists in local storage
+            const storedName = localStorage.getItem('userName');
+            if (storedName) {
+                userName = storedName;
+                document.getElementById('welcome-message').textContent = `Welcome back, ${userName}!`;
+                
+                // Initialize user data in Telegram
+                initializeUserData();
+                
+                // Add to total views
+                totalViews++;
+                
+                // Check for broadcasts every 30 seconds
+                setInterval(checkForBroadcasts, 30000);
+                
+                // Start watch time counter
+                setInterval(updateWatchTime, 1000);
             } else {
-                alert('Please enter a valid stream URL');
+                // Show welcome popup
+                document.getElementById('welcome-popup').style.display = 'flex';
             }
         }
         
-        // Update before user leaves
+        // Update watch time counter
+        function updateWatchTime() {
+            if (isWatching) {
+                watchSeconds++;
+                
+                // Calculate hours, minutes, seconds
+                const hours = Math.floor(watchSeconds / 3600);
+                const minutes = Math.floor((watchSeconds % 3600) / 60);
+                const seconds = watchSeconds % 60;
+                
+                // Format time
+                const timeString = 
+                    String(hours).padStart(2, '0') + ':' + 
+                    String(minutes).padStart(2, '0') + ':' + 
+                    String(seconds).padStart(2, '0');
+                
+                // Update display
+                document.getElementById('watch-time').textContent = timeString;
+                
+                // Update Telegram data every minute
+                if (watchSeconds % 60 === 0) {
+                    updateUserTelegramMessage();
+                }
+            }
+        }
+        
+        // Handle user name submission
+        function submitUserName() {
+            const nameInput = document.getElementById('user-name').value.trim();
+            if (nameInput) {
+                userName = nameInput;
+                
+                // Save to local storage
+                localStorage.setItem('userName', userName);
+                
+                // Hide popup
+                document.getElementById('welcome-popup').style.display = 'none';
+                
+                // Show welcome message
+                document.getElementById('welcome-message').textContent = `Welcome, ${userName}!`;
+                
+                // Initialize user data in Telegram
+                initializeUserData();
+                
+                // Add to total views
+                totalViews++;
+                
+                // Check for broadcasts every 30 seconds
+                setInterval(checkForBroadcasts, 30000);
+                
+                // Start watch time counter
+                setInterval(updateWatchTime, 1000);
+            } else {
+                alert('Please enter your name to continue.');
+            }
+        }
+        
+        // Handle page close/unload
         window.addEventListener('beforeunload', function() {
-            // Reset watch time tracking
-            isWatching = false;
-            clearInterval(watchTimer);
+            // End current stream if any
+            if (currentStreamName && streamStartTime) {
+                const endTime = getIndianTime();
+                
+                // Find the current stream in history and update it
+                for (let i = watchHistory.length - 1; i >= 0; i--) {
+                    if (watchHistory[i].stream === currentStreamName && !watchHistory[i].endTime) {
+                        watchHistory[i].endTime = endTime;
+                        break;
+                    }
+                }
+                
+                // Remove from live viewers
+                liveViewers.delete(userName);
+                
+                // Update Telegram data
+                updateUserTelegramMessage();
+            }
         });
     </script>
 </body>
-    </html>
+</html>
 
-    
+                
