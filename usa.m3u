@@ -61,7 +61,7 @@ http://fl5.moveonjoy.com/EPIX_DRIVE_IN/index.m3u8
 http://fl5.moveonjoy.com/EPIX_HITS/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/espn-2-us.png",  Espn 2
 http://fl5.moveonjoy.com/ESPN_2/index.m3u8
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/espnews-hd-us.png",  Espn News
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/hd/espnews-hd-us.png",  Espn News
 http://fl5.moveonjoy.com/ESPN_NEWS/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/espn-u-us.png",  Espn U
 http://fl5.moveonjoy.com/ESPN_U/index.m3u8
@@ -141,8 +141,32 @@ http://fl5.moveonjoy.com/National_Geographic/index.m3u8
 http://fl5.moveonjoy.com/Nat_Geo_Wild/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 1
 http://fl5.moveonjoy.com/NBA_1/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 2
+http://fl5.moveonjoy.com/NBA_2/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 3
+http://fl5.moveonjoy.com/NBA_3/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 4
+http://fl5.moveonjoy.com/NBA_4/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 5
+http://fl5.moveonjoy.com/NBA_5/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 6
+http://fl5.moveonjoy.com/NBA_6/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 7
+http://fl5.moveonjoy.com/NBA_7/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 8
+http://fl5.moveonjoy.com/NBA_8/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 9
+http://fl5.moveonjoy.com/NBA_9/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 10
+http://fl5.moveonjoy.com/NBA_10/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 11
+http://fl5.moveonjoy.com/NBA_11/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 12
 http://fl5.moveonjoy.com/NBA_12/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 13
+http://fl5.moveonjoy.com/NBA_13/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba 14
+http://fl5.moveonjoy.com/NBA_14/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nba-tv-us.png",  Nba Tv
 http://fl5.moveonjoy.com/NBA_TV/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/news-nation-us.png",  News Nation
@@ -151,8 +175,34 @@ http://fl5.moveonjoy.com/NEWS_NATION/index.m3u8
 http://fl5.moveonjoy.com/NFL_NETWORK/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 1
 http://fl5.moveonjoy.com/NHL_1/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 2
+http://fl5.moveonjoy.com/NHL_2/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 3
+http://fl5.moveonjoy.com/NHL_3/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 4
+http://fl5.moveonjoy.com/NHL_4/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 5
+http://fl5.moveonjoy.com/NHL_5/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 6
+http://fl5.moveonjoy.com/NHL_6/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 7
+http://fl5.moveonjoy.com/NHL_7/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 8
+http://fl5.moveonjoy.com/NHL_8/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 9
+http://fl5.moveonjoy.com/NHL_9/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 10
+http://fl5.moveonjoy.com/NHL_10/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 11
+http://fl5.moveonjoy.com/NHL_11/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 12
 http://fl5.moveonjoy.com/NHL_12/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 13
+http://fl5.moveonjoy.com/NHL_13/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 14
+http://fl5.moveonjoy.com/NHL_14/index.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl 15
+http://fl5.moveonjoy.com/NHL_15/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nhl-network-us.png",  Nhl Network
 http://fl5.moveonjoy.com/NHL_NETWORK/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/nick-jr-us.png",  Nick Jr
