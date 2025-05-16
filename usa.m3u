@@ -1,4 +1,9 @@
 #EXTM3U
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/cartoon-network-us.png",India
+http://play.denver1769.fun/Play/TPv3.php?id=681
+http://play.denver1769.fun/Play/TPv3.php?id=138
+http://play.denver1769.fun/Play/TPv3.php?id=433
+http://play.denver1769.fun/Play/TPv3.php?id=114
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/acc-network-us.png",  Acc Network
 http://fl5.moveonjoy.com/ACC_NETWORK/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/hd/amc-hd-us.png",  Amc Network
