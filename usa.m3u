@@ -100,7 +100,7 @@ http://fl5.moveonjoy.com/GET_TV/index.m3u8
 http://fl5.moveonjoy.com/GOLF_CHANNEL/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/hallmark-channel-us.png",  Hallmark Channel
 http://fl5.moveonjoy.com/HALLMARK_CHANNEL/index.m3u8
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/hallmark-tv-us.png",  Hallmark Drama
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/hallmark-family-us.png",  Hallmark Family
 http://fl5.moveonjoy.com/HALLMARK_DRAMA/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/scoobyff/tv-logos/main/countries/united-states/hd/hbo-hd-us.png",  Hbo
 http://fl5.moveonjoy.com/HBO/index.m3u8
